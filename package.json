@@ -1,0 +1,48 @@
+{
+    "name": "cypress-service",
+    "version": "0.1.0",
+    "description": "Post your application Cypress tests to a server you host and have it run them in parallel and store the results",
+    "main": "index.js",
+    "scripts": {
+        "cypress:run": "cypress run",
+        "cypress:open": "cypress open",
+        "cypress:verify": "cypress verify",
+        "cypress:version": "cypress version",
+        "cypress:info": "cypress info",
+        "cypress:cache:list": "cypress cache list",
+        "list-videos": "ls -l cypress/videos",
+        "check-videos": "ok-file 'cypress/videos/*.mp4'",
+        "set-status": "set-status",
+        "start": "node index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Qarj/cypress-service.git"
+    },
+    "keywords": [
+        "cypress",
+        "test",
+        "server"
+    ],
+    "author": "Qarj",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Qarj/cypress-service/issues"
+    },
+    "homepage": "https://github.com/Qarj/cypress-service#readme",
+    "dependencies": {
+        "config": "^3.3.3",
+        "connect-timeout": "^1.9.0",
+        "cypress": "^6.6.0",
+        "express": "^4.17.1",
+        "express-fileupload": "^1.2.1",
+        "mochawesome": "^6.2.2",
+        "mochawesome-merge": "^4.2.0",
+        "mochawesome-report-generator": "^5.2.0",
+        "serve-index": "^1.9.1",
+        "unzipper": "^0.10.11"
+    },
+    "devDependencies": {
+        "prettier": "2.2.1"
+    }
+}
