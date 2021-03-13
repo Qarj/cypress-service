@@ -25,7 +25,7 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 Cypress.Commands.add('checkPing', () => {
-    cy.visit('http://localhost:3950/ping');
+    cy.visit('http://localhost:4567/ping');
     cy.get('body').contains('cypress-service is up!').should('exist');
 });
 

@@ -4,8 +4,8 @@
     "description": "Post your application Cypress tests to a server you host and have it run them in parallel and store the results",
     "main": "index.js",
     "scripts": {
-        "cypress:run": "cypress run",
-        "cypress:open": "cypress open",
+        "cypress:run": "cypress run --config-file cypress/cypress.json",
+        "cypress:open": "cypress open --config-file cypress/cypress.json",
         "cypress:verify": "cypress verify",
         "cypress:version": "cypress version",
         "cypress:info": "cypress info",

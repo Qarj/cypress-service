@@ -1,0 +1,24 @@
+{
+    "browser": "electron",
+    "headless": true,
+    "config": {
+        "video": true,
+        "videosFolder": "cypress/results/videos/",
+        "defaultCommandTimeout": 30000,
+        "requestTimeout": 30000
+    },
+    "env": {
+        "name": "live"
+    },
+    "chromeWebSecurity": false,
+    "spec": "cypress/integration/**/*",
+    "reporter": "mochawesome",
+    "reporterOptions": {
+        "reportDir": "cypress/results/",
+        "overwrite": true,
+        "html": false,
+        "json": true
+    },
+    "fixturesFolder": "cypress/fixtures/",
+    "baseUrl": "http://localhost:4567"
+}

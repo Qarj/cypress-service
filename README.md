@@ -5,7 +5,7 @@ npm install
 npm run start
 ```
 
-http://localhost:3950/about
+http://localhost:4567/about
 
 Built to work with the npm package `cypress-service-client`. https://github.com/Qarj/cypress-service-client
 
