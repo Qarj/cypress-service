@@ -339,3 +339,9 @@ pm2 start index.js
 This will start it and daemonise it and you are done. It even works on Windows!
 
 Note re Windows - It is strongly suggested to use Linux and not Windows as the server. In a test conducted on a 4 core 8 thread AWS XEON server with 16 GB memory it took 600 seconds to conduct a certain heavily parallel test. The same test on Linux running inside Virtual Box with just 8 GB of memory and 3 cores / 6 threads took just 100 seconds - and this was on a Dell laptop!
+
+# Windows Server Installation
+
+Check the folder [windows/README.md] for info on running under a service account in Windows using Task Scheduler.
+
+If following this method you can see the server logs at http://localhost:4567/logs

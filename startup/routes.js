@@ -11,6 +11,7 @@ module.exports = function (app) {
     app.use('/ping', ping);
     app.use(fileUpload()); // must be before route to /tests
     app.use('/tests', tests);
+    app.use('/logs', express.static('logs'), serveIndex('logs', { icons: true }));
     app.use('/results', express.static('results'), serveIndex('results', { icons: true }));
     app.use('/static', express.static('static'), serveIndex('static', { icons: true }));
 };
