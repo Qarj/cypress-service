@@ -12,13 +12,6 @@
     },
     "chromeWebSecurity": false,
     "spec": "cypress/integration/**/*",
-    "reporter": "mochawesome",
-    "reporterOptions": {
-        "reportDir": "cypress/results/",
-        "overwrite": true,
-        "html": false,
-        "json": true
-    },
     "fixturesFolder": "cypress/fixtures/",
     "baseUrl": "http://localhost:4567"
 }
