@@ -178,11 +178,11 @@ The `cypress-service` built run config `cypress-dev-RUN.json` could look like th
 
 # Core API
 
-## POST /tests/:env/:app
+## POST /test/:env/:app
 
 Post your `cypress` folder containing all your tests and config to the cypress-service.
 
-path `/tests/{env}/{app}` example: `/tests/dev/cypress-frontend-app`
+path `/test/{env}/{app}` example: `/test/dev/cypress-frontend-app`
 posttype `multipart/form-data`
 
 field `uploadFile` - expect zip file of mime type `application/zip`
@@ -205,7 +205,7 @@ Response 201
 }
 ```
 
-## GET /tests/:env/:app/parallel
+## GET /test/:env/:app/parallel
 
 Will kick off all suites for the app to run in parallel.
 
@@ -220,12 +220,12 @@ Specify `?noVideo=1` to stop video files being produced.
 Example using all options:
 
 ```
-/tests/live/my-frontend-app/parallel?interval=10000&group=MyGroup&noVideo=1
+/test/live/my-frontend-app/parallel?interval=10000&group=MyGroup&noVideo=1
 ```
 
 Note that you will not get a response until all suites have been kicked off.
 
-## GET /tests/:env/:app/summary
+## GET /test/:env/:app/summary
 
 Returns a html summary report showing the pass/fail result for each of the suites in the app.
 
@@ -239,14 +239,18 @@ For each suite there is a link to the mochawesome report.
 
 You can navigate the results to view results for all previous runs.
 
-## GET /tests/:env/:app?suite=core-frontend&group=MyGroup
+## GET /tests
+
+You can navigate all deployed tests.
+
+## GET /test/:env/:app?suite=core-frontend&group=MyGroup
 
 Run a single suite of tests and return the result in JSON.
 
 `suite`: A suite for cypress-service is defined as any of the subfolders directly under `cypress/integration`.
 `group`: An identifier to group related suites on the `summary.html` report.
 
-Example: GET /tests/prod/cypress-frontend-app?suite=core-frontend&group=MyGroup
+Example: GET /test/prod/cypress-frontend-app?suite=core-frontend&group=MyGroup
 
 The response will be the JSON that `cypress.run()` returns - see https://docs.cypress.io/guides/guides/module-api.html
 
@@ -298,7 +302,7 @@ When the `noWait=1` option is used, the example response will be like:
 
 This API is used by the npm package `cypress-service-client` to kick of the tests in parallel.
 
-## GET /tests/:env/:app?group=MyGroup
+## GET /test/:env/:app?group=MyGroup
 
 Runs all the tests under the `cypress/integration` folder one after the other (i.e. sequentially).
 
@@ -324,19 +328,19 @@ npm run cypress:open
 
 Then run all tests!
 
-## /tests/:env/:app/runConfig
+## /test/:env/:app/runConfig
 
 Returns the latest built run config for that app - the run config is only built when you kick off a test run.
 
-## /tests/:env/:app/message
+## /test/:env/:app/message
 
 Returns the last message (response) that you got when you posted some tests.
 
-## /tests/:env/:app/lastReport
+## /test/:env/:app/lastReport
 
 Redirects to the last mochawesome.html report generated for those tests.
 
-## /tests/:env/:app/lastRunResult
+## /test/:env/:app/lastRunResult
 
 Returns the last json run result returned by `cypress.run()` for those tests.
 
@@ -369,3 +373,19 @@ Note re Windows - It is strongly suggested to use Linux and not Windows as the s
 Check the folder [windows/README.md] for info on running under a service account in Windows using Task Scheduler.
 
 If following this method you can see the server logs at http://localhost:4567/logs
+
+# Self test
+
+First start the server,
+
+```
+npm run start
+```
+
+then in another terminal, open the Cypress runner and run interactively.
+
+```
+npm run cypress:open
+```
+
+It will take approx 300 seconds to run on a good Linux box.
