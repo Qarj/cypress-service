@@ -6,6 +6,8 @@ const fs = require('fs-extra');
 const unzipper = require('unzipper');
 const marge = require('mochawesome-report-generator');
 const { merge } = require('mochawesome-merge');
+const config = require('config');
+const csc = require('cypress-service-client');
 
 router.post('/:env/:app', async function (req, res) {
     const env = req.params.env;
@@ -443,6 +445,71 @@ router.get('/:env/:app', async function (req, res) {
                 res.send({ error });
             }
         });
+});
+
+router.get('/:env/:app/parallel', async function (req, res) {
+    const env = req.params.env;
+    const app = req.params.app;
+    let group = req.query.group || '';
+    const noVideo = req.query.noVideo === '1';
+    const interval = parseInt(req.query.interval) || 5000;
+    const deployPath = `tests/${env}/${app}`;
+    const versionPath = `${deployPath}/version.json`;
+
+    if (!fs.existsSync(versionPath)) {
+        return res.status(500).json({
+            message: `File ${versionPath} not found - are you sure you deployed these tests?`,
+        });
+    }
+    const versionData = fs.readFileSync(versionPath, { encoding: 'utf8', flag: 'r' });
+    const version = JSON.parse(versionData).version;
+
+    group = group.replace(/[/\?%*:|"<>\s]/g, '-');
+
+    const info = {
+        version: version,
+        env: env,
+        app: app,
+        group: group,
+        deployPath: deployPath,
+    };
+
+    const serviceBaseUrl = `http://localhost:${config.port}`;
+
+    options = {
+        app: app,
+        noVideo: noVideo,
+        startInterval: interval,
+        cypressPath: deployPath,
+    };
+
+    if (group) {
+        options['groupName'] = group;
+    }
+
+    const results = await csc.startParallel(serviceBaseUrl, env, options);
+    let serviceMessages = [];
+
+    let failed = false;
+    for (let i = 0; i < results.length; i++) {
+        if ('text' in results[i]) {
+            serviceMessages.push(JSON.parse(results[i].text));
+        }
+        if ('message' in results[i]) {
+            failed = true;
+            serviceMessages.push(results[i].message);
+        }
+    }
+
+    const status = failed ? 'with errors' : 'without error';
+    const code = failed ? 500 : 200;
+
+    let summary = {
+        message: `Request for all suites in app to be started has been submitted ${status}.`,
+        serviceMessages: serviceMessages,
+        info: info,
+    };
+    res.status(code).json(summary);
 });
 
 function getDate() {

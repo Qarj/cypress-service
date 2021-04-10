@@ -205,6 +205,40 @@ Response 201
 }
 ```
 
+## GET /tests/:env/:app/parallel
+
+Will kick off all suites for the app to run in parallel.
+
+There is a default interval of 5000 ms or you can specify `?interval=10000` or similar to change it.
+
+A group name based on the current time will be generated such as `15.12.34.234`.
+
+It is possible to define a custom group name `?group=MyGroup`, but it cannot be reused in the same calendar day.
+
+Specify `?noVideo=1` to stop video files being produced.
+
+Example using all options:
+
+```
+/tests/live/my-frontend-app/parallel?interval=10000&group=MyGroup&noVideo=1
+```
+
+Note that you will not get a response until all suites have been kicked off.
+
+## GET /tests/:env/:app/summary
+
+Returns a html summary report showing the pass/fail result for each of the suites in the app.
+
+The most recent run group results are returned.
+
+For each suite there is a link to the mochawesome report.
+
+![Alt text](static/summary_pass_example.png 'summary.html pass example')
+
+## GET /results
+
+You can navigate the results to view results for all previous runs.
+
 ## GET /tests/:env/:app?suite=core-frontend&group=MyGroup
 
 Run a single suite of tests and return the result in JSON.
@@ -269,16 +303,6 @@ This API is used by the npm package `cypress-service-client` to kick of the test
 Runs all the tests under the `cypress/integration` folder one after the other (i.e. sequentially).
 
 Other options and example responses are as per above.
-
-## GET /tests/:env/:app/summary
-
-Returns a html summary report showing the pass/fail result for each of the suites in the app.
-
-The most recent run group results are returned.
-
-For each suite there is a link to the mochawesome report.
-
-![Alt text](static/summary_pass_example.png 'summary.html pass example')
 
 # Additional API
 
