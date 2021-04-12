@@ -21,7 +21,7 @@ describe('Tests', function () {
     });
 
     it('POST myFile.txt to /test/dev/example1 - but expects .zip file', function () {
-        cy.postTests('/test/dev/example1', 'myFile.txt', 'v1.1.1', 'Please provide a .zip file');
+        cy.postTests('/test/dev/example1', 'myFile.txt', 'v1.1.1', 400, 'Please provide a .zip file');
     });
 
     it('POST cypress-frontend-app.zip to /test/dev/example2', function () {
@@ -37,6 +37,7 @@ describe('Tests', function () {
             '/test/mars/cypress-frontend-app',
             'cypress-frontend-app.zip',
             'v1.0.0',
+            400,
             'Please provide cypress-mars.json file at cypress root, e.g. cypress/cypress-mars.json',
         );
     });

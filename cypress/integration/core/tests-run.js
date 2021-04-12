@@ -20,7 +20,7 @@ describe('Tests', function () {
             'Tests kicked off but not waiting for the result.',
         );
         cy.wait(1500);
-        cy.httpGet(`/test/pat/cypress-backend-app?noVideo=1&group=${u.rndGroup()}`, 200, 'Tests are still running.');
+        cy.httpGet(`/test/pat/cypress-backend-app?noVideo=1&group=${u.rndGroup()}`, 423, 'Tests are still running.');
     });
 
     it('posts a test, runs it without waiting option, then keeps trying to run again until it can', function () {
@@ -29,7 +29,7 @@ describe('Tests', function () {
         cy.httpGet(`/test/yellow/cypress-backend-app?noVideo=1&noWait=1&group=${group}`, 200, 'Tests kicked off');
         cy.wait(100);
         const newGroup = group + '_newGroup';
-        cy.httpGet(`/test/yellow/cypress-backend-app?noVideo=1&group=${newGroup}`, 200, 'Tests are still running.');
+        cy.httpGet(`/test/yellow/cypress-backend-app?noVideo=1&group=${newGroup}`, 423, 'Tests are still running.');
         cy.httpGetRetry(`/test/yellow/cypress-backend-app?noVideo=1&group=${newGroup}`, 200, '"failures":0');
     });
 
@@ -51,11 +51,25 @@ describe('Tests', function () {
         cy.httpGetRetry('/test/purple/cypress-backend-app/lastRunResult?suite=canary', 200, 'checks the canary page');
     });
 
+    it('client is able to see that tests are running for an env and app', function () {
+        const group = u.rndGroup();
+        cy.httpGet('/test/perf/cypress-backend-app/status', 200, 'Tests are not running for this env and app');
+        cy.postTests('/test/perf/cypress-backend-app', 'cypress-backend-app.zip', 'v1.1.111');
+        cy.httpGet('/test/perf/cypress-backend-app/message', 200, 'unzipped ok');
+        cy.httpGet(`/test/perf/cypress-backend-app?suite=canary&group=${group}&noWait=1&noVideo=1`, 200, 'kicked off');
+        cy.httpGet('/test/perf/cypress-backend-app/status', 200, 'Tests are running for this env and app');
+        cy.httpGet(`/test/perf/cypress-backend-app?suite=core-api&group=${group}&noWait=1&noVideo=1`, 200, 'kicked off');
+        cy.httpGet('/test/perf/cypress-backend-app/status', 200, 'Tests are running for this env and app');
+
+        cy.httpGetRetry('/test/perf/cypress-backend-app/summary', 200, 'All tests passed');
+        cy.httpGet('/test/perf/cypress-backend-app/status', 200, 'Tests are not running for this env and app');
+    });
+
     it('tries to run the same suite twice (in parallel) but only first is allowed to run', function () {
         const group = u.rndGroup();
         cy.postTests('/test/red/cypress-backend-app', 'cypress-backend-app.zip', 'v4.783.21');
         cy.httpGet(`/test/red/cypress-backend-app?suite=canary&group=${group}&noWait=1&noVideo=1`, 200, 'kicked off');
-        cy.httpGet(`/test/red/cypress-backend-app?suite=canary&group=${group}&noVideo=1`, 200, 'Tests are still running');
+        cy.httpGet(`/test/red/cypress-backend-app?suite=canary&group=${group}&noVideo=1`, 423, 'Tests are still running');
         cy.httpGetRetry('/test/red/cypress-backend-app/lastRunResult?suite=canary', 200, 'checks the canary page');
     });
 
@@ -63,7 +77,7 @@ describe('Tests', function () {
         const group = u.rndGroup();
         cy.postTests('/test/team1/cypress-backend-app', 'cypress-backend-app.zip', 'v3.183.23');
         cy.httpGet(`/test/team1/cypress-backend-app?suite=canary&group=${group}&noWait=1&noVideo=1`, 200, 'kicked off');
-        cy.httpGet(`/test/team1/cypress-backend-app?group=${group}&noVideo=1`, 200, 'Tests are still running');
+        cy.httpGet(`/test/team1/cypress-backend-app?group=${group}&noVideo=1`, 423, 'Tests are still running');
         cy.httpGetRetry('/test/team1/cypress-backend-app/lastRunResult?suite=canary', 200, 'checks the canary page');
     });
 
@@ -71,7 +85,7 @@ describe('Tests', function () {
         const group = u.rndGroup();
         cy.postTests('/test/yellow/cypress-backend-app', 'cypress-backend-app.zip', 'v1.113.23');
         cy.httpGet(`/test/yellow/cypress-backend-app?group=${group}&noWait=1&noVideo=1`, 200, 'kicked off');
-        cy.httpGet(`/test/yellow/cypress-backend-app?suite=canary&group=${group}&noVideo=1`, 200, 'Tests are still running');
+        cy.httpGet(`/test/yellow/cypress-backend-app?suite=canary&group=${group}&noVideo=1`, 423, 'Tests are still running');
         cy.httpGetRetry('/test/yellow/cypress-backend-app/lastRunResult', 200, 'completes the search workflow');
     });
 
@@ -96,7 +110,7 @@ describe('Tests', function () {
 
         // 3. Confirm the tests are still running from the first deployment, then do the second deployment
         //    Note that for this test we deploy entirely different tests so we can tell the two deployments apart
-        cy.httpGet(`/test/red/cypress-backend-app?noVideo=1&group=${u.rndGroup()}`, 200, 'Tests are still running.');
+        cy.httpGet(`/test/red/cypress-backend-app?noVideo=1&group=${u.rndGroup()}`, 423, 'Tests are still running.');
         cy.postTests('/test/red/cypress-backend-app', 'cypress-frontend-app.zip', 'v15.2.0');
 
         // 4. Now we wait until the original tests have finished - prove the are not affected by
@@ -118,7 +132,7 @@ describe('Tests', function () {
 
         // 3. Confirm the tests are still running from the first deployment, then do the second deployment
         //    Note that for this test we deploy entirely different tests so we can tell the two deployments apart
-        cy.httpGet(`/test/pink/cypress-backend-app?noVideo=1&group=${group}`, 200, 'Tests are still running.');
+        cy.httpGet(`/test/pink/cypress-backend-app?noVideo=1&group=${group}`, 423, 'Tests are still running.');
         cy.postTests('/test/pink/cypress-backend-app', 'cypress-frontend-app.zip', 'v15.2.0');
 
         // 4. Now we kick off the new tests and wait for them to complete ok

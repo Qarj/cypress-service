@@ -41,7 +41,7 @@ Cypress.Commands.add('multipartFormRequest', (method, url, formData, done) => {
     xhr.send(formData);
 });
 
-Cypress.Commands.add('postTests', function (path, postedFileName, version, e400 = '') {
+Cypress.Commands.add('postTests', function (path, postedFileName, version, expectedStatusCode = 201, expectedMessage = 'unzipped ok') {
     const baseUrl = Cypress.config().baseUrl;
     const postUrl = `${baseUrl}${path}`;
     const base64FileName = `${postedFileName}.base64`;
@@ -60,14 +60,6 @@ Cypress.Commands.add('postTests', function (path, postedFileName, version, e400 
         const mimeType = 'application/zip';
         const blob = Cypress.Blob.base64StringToBlob(this.base64File, mimeType);
         formData.append('uploadFile', blob, postedFileName);
-
-        let expectedStatusCode = 201;
-        let expectedMessage = 'unzipped ok';
-
-        if (e400) {
-            expectedStatusCode = 400;
-            expectedMessage = e400;
-        }
 
         // Post the zipped cypress folder
         cy.multipartFormRequest('POST', postUrl, formData, function (response) {
@@ -127,7 +119,7 @@ Cypress.Commands.add('httpGet', function (path, expectedStatus, expectedContent,
     });
 });
 
-Cypress.Commands.add('httpGetRetry', function (path, expectedStatus, expectedContent, retryMax = 95, waitMs = 10000) {
+Cypress.Commands.add('httpGetRetry', function (path, expectedStatus, expectedContent, retryMax = 180, waitMs = 5000) {
     const baseUrl = Cypress.config().baseUrl;
     const getUrl = `${baseUrl}${path}`;
     const expectedRE = new RegExp(expectedContent);

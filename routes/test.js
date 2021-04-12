@@ -236,6 +236,16 @@ router.get('/:env/:app/summary', async function (req, res) {
     return res.status(200).send(summary);
 });
 
+router.get('/:env/:app/status', async function (req, res) {
+    const env = req.params.env;
+    const app = req.params.app;
+
+    const running = isTestsRunning(req, env, app);
+    modify = running ? '' : 'not ';
+
+    return res.status(200).json({ message: `Tests are ${modify}running for this env and app.`, running: running });
+});
+
 router.get('/:env/:app', async function (req, res) {
     const env = req.params.env;
     const app = req.params.app;
@@ -296,7 +306,7 @@ router.get('/:env/:app', async function (req, res) {
     }
 
     if (isBlockedFromRunningTheseTests(req, env, app, resultFolder)) {
-        return res.status(200).json({
+        return res.status(423).json({
             message: `Tests are still running.`,
             info: info,
         });
@@ -541,6 +551,14 @@ function blockTheseTestsFromRunning(req, env, app, resultFolder) {
     let status = getCurrentRunStatus(req, env, app);
     status[resultFolder] = true;
     req.app.locals[`${env}/${app} tests in progress`] = status;
+}
+
+function isTestsRunning(req, env, app) {
+    return !isEmpty(getCurrentRunStatus(req, env, app));
+}
+
+function isEmpty(obj) {
+    return obj && Object.keys(obj).length === 0 && obj.constructor === Object;
 }
 
 function isBlockedFromRunningTheseTests(req, env, app, resultFolder) {

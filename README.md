@@ -205,6 +205,12 @@ Response 201
 }
 ```
 
+As a failsafe, deploying tests will set the server state to indicate that tests for that
+env and app are not running.
+
+Deploying a new version of tests while the old version of tests are still running is safe - tests
+are copied to the new results folder and run from there.
+
 ## GET /test/:env/:app/parallel
 
 Will kick off all suites for the app to run in parallel.
@@ -224,6 +230,10 @@ Example using all options:
 ```
 
 Note that you will not get a response until all suites have been kicked off.
+
+## GET /test/:env/:app/status
+
+Indicates if the tests for the env and app are currently running.
 
 ## GET /test/:env/:app/summary
 
