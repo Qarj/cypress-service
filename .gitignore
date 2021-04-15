@@ -1,5 +1,6 @@
 # Cypress results
 cypress/results/
+cypress/screenshots/
 *.mp4
 results/
 mochawesome-report/

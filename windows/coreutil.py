@@ -61,20 +61,20 @@ def pid_listening_on_cypress_server_port ():
 def kill_pid (pid):
     shell (f"taskkill /PID {pid} /F")
 
-def kill_pid_listening_on_cypress_server_port ():
+def kill_pid_listening_on_cypress_service_port ():
     pid = pid_listening_on_cypress_server_port ()
     kill_pid (pid)
 
 def first_pid_locking_server_log ():
-    handle_cmd = f"handle64 {project_root ()}\\logs\\server.log /accepteula"
+    handle_cmd = f"handle64 {project_root ()}\\logs\\cypress-service.log /accepteula"
     notLocked, handleSTDOUT = shell(handle_cmd)
     if notLocked:
         return 0
     pid = int_grep (r'pid: (\d+)', handleSTDOUT)
-    log (f"{pid} is locking server.log")
+    log (f"{pid} is locking cypress-service.log")
     return pid
 
-def kill_processes_locking_server_log ():
+def kill_processes_locking_service_log ():
     for _ in range (10):
         pid = first_pid_locking_server_log ()
         if pid == 0:
