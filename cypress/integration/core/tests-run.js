@@ -1,3 +1,4 @@
+/* eslint-disable cypress/no-unnecessary-waiting */
 const u = require('../../util/util.js');
 
 describe('Tests', function () {
@@ -58,10 +59,26 @@ describe('Tests', function () {
         cy.httpGet('/test/perf/cypress-backend-app/message', 200, 'unzipped ok');
         cy.httpGet(`/test/perf/cypress-backend-app?suite=canary&group=${group}&noWait=1&noVideo=1`, 200, 'kicked off');
         cy.httpGet('/test/perf/cypress-backend-app/status', 200, 'Tests are running for this env and app');
-        cy.httpGet(`/test/perf/cypress-backend-app?suite=core-api&group=${group}&noWait=1&noVideo=1`, 200, 'kicked off');
+
+        // Allow canary test to run for a bit but make sure it is still running
+        cy.wait(1000);
         cy.httpGet('/test/perf/cypress-backend-app/status', 200, 'Tests are running for this env and app');
 
-        cy.httpGetRetry('/test/perf/cypress-backend-app/summary', 200, 'All tests passed');
+        // Start off core-api and produce video to make it a little slower
+        cy.httpGet(`/test/perf/cypress-backend-app?suite=core-api&group=${group}&noWait=1`, 200, 'kicked off');
+        cy.httpGet('/test/perf/cypress-backend-app/status', 200, 'Tests are running for this env and app');
+
+        // Wait for the canary test to complete
+        cy.httpGetRetry('/test/perf/cypress-backend-app/summary', 200, 'class=..pass.. info=..canary', 100, 200);
+
+        // Make sure core-api is still running and /status still returns running
+        cy.httpGet('/test/perf/cypress-backend-app/status', 200, 'Tests are running for this env and app');
+        cy.httpGet('/test/perf/cypress-backend-app/summary', 200, 'class=..pend.. info=..core-api');
+
+        // Now core-api should finish
+        cy.httpGetRetry('/test/perf/cypress-backend-app/summary', 200, 'All tests passed', 20, 1000);
+
+        // /status shows tests are not running
         cy.httpGet('/test/perf/cypress-backend-app/status', 200, 'Tests are not running for this env and app');
     });
 

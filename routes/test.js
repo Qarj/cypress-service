@@ -241,7 +241,7 @@ router.get('/:env/:app/status', async function (req, res) {
     const app = req.params.app;
 
     const running = isTestsRunning(req, env, app);
-    modify = running ? '' : 'not ';
+    const modify = running ? '' : 'not ';
 
     return res.status(200).json({ message: `Tests are ${modify}running for this env and app.`, running: running });
 });
@@ -434,7 +434,7 @@ router.get('/:env/:app', async function (req, res) {
             }
             updateSummary(results, summaryOptions);
             fu.saveJSONSync(`${deployPath}/lastRunResult-${resultFolder}.json`, results);
-            allowTestsForThisAppToBeRun(req, env, app);
+            allowTestsForThisSuiteToBeRun(req, env, app, resultFolder);
             if (!noWait) {
                 res.send({ results });
             }
@@ -450,7 +450,7 @@ router.get('/:env/:app', async function (req, res) {
             }
             updateSummary(error, summaryOptions);
             fu.saveJSONSync(`${deployPath}/lastRunResult-${resultFolder}.json`, error);
-            allowTestsForThisAppToBeRun(req, env, app);
+            allowTestsForThisSuiteToBeRun(req, env, app, resultFolder);
             if (!noWait) {
                 res.send({ error });
             }
@@ -545,6 +545,16 @@ function pad(str, pad = '00', padLeft = true) {
 
 function allowTestsForThisAppToBeRun(req, env, app) {
     req.app.locals[`${env}/${app} tests in progress`] = {};
+}
+
+function allowTestsForThisSuiteToBeRun(req, env, app, resultFolder) {
+    let status = getCurrentRunStatus(req, env, app, resultFolder);
+    try {
+        delete status[resultFolder];
+    } catch (err) {
+        console.log('Status not found - possible deploy caused reset. Is ok.');
+    }
+    req.app.locals[`${env}/${app} tests in progress`] = status;
 }
 
 function blockTheseTestsFromRunning(req, env, app, resultFolder) {
