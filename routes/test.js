@@ -350,12 +350,25 @@ router.get('/:env/:app', async function (req, res) {
     let postedConfig = JSON.parse(postedConfigData);
 
     copyProperty('env', postedConfig, runConfig);
-    copyProperty('baseUrl', postedConfig, runConfig);
-    copyProperty('ignoreTestFiles', postedConfig, runConfig);
-    copyProperty('blockHosts', postedConfig, runConfig);
-    copyProperty('userAgent', postedConfig, runConfig);
-    copyProperty('viewportHeight', postedConfig, runConfig);
-    copyProperty('viewportWidth', postedConfig, runConfig);
+    copyProperty('baseUrl', postedConfig, runConfig['config']);
+    copyProperty('ignoreTestFiles', postedConfig, runConfig['config']);
+    copyProperty('blockHosts', postedConfig, runConfig['config']);
+    copyProperty('userAgent', postedConfig, runConfig['config']);
+    copyProperty('viewportHeight', postedConfig, runConfig['config']);
+    copyProperty('viewportWidth', postedConfig, runConfig['config']);
+    copyProperty('redirectionLimit', postedConfig, runConfig['config']);
+    copyProperty('retries', postedConfig, runConfig['config']);
+    copyProperty('port', postedConfig, runConfig['config']);
+    copyProperty('numTestsKeptInMemory', postedConfig, runConfig['config']);
+    copyProperty('includeShadowDom', postedConfig, runConfig['config']);
+    copyProperty('execTimeout', postedConfig, runConfig['config']);
+    copyProperty('taskTimeout', postedConfig, runConfig['config']);
+    copyProperty('pageLoadTimeout', postedConfig, runConfig['config']);
+    copyProperty('responseTimeout', postedConfig, runConfig['config']);
+    copyProperty('videoCompression', postedConfig, runConfig['config']);
+    copyProperty('animationDistanceThreshold', postedConfig, runConfig['config']);
+    copyProperty('waitForAnimations', postedConfig, runConfig['config']);
+    copyProperty('scrollBehavior', postedConfig, runConfig['config']);
 
     const runConfigPath = `tests/${env}/${app}/cypress-${env}-RUN.json`;
     fs.writeFileSync(runConfigPath, JSON.stringify(runConfig));
