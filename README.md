@@ -125,7 +125,7 @@ Suppose your posted `cypress-dev.json` was this:
         "englishHost": "www.english.io",
         "brandHost": "www.brand.dev.io"
     },
-    "baseUrl": "http://www.mybaseurl.dev.io",
+    "baseUrl": "https://www.mybaseurl.dev.io",
     "ignoreTestFiles": "*.ignore-this.js",
     "blockHosts": "www.block.this.host.io",
     "userAgent": "this is my useragent string",
@@ -150,7 +150,13 @@ The `cypress-service` built run config `cypress-dev-RUN.json` could look like th
         "supportFile": "results/dev/cypress-frontend-app/2021.03.11/21.51.05.490/allSuites/cypress/support/index.js",
         "downloadsFolder": "results/dev/cypress-frontend-app/2021.03.11/21.51.05.490/allSuites/downloads",
         "screenshotsFolder": "results/dev/cypress-frontend-app/2021.03.11/21.51.05.490/allSuites/screenshots",
-        "videosFolder": "results/dev/cypress-frontend-app/2021.03.11/21.51.05.490/allSuites/videos"
+        "videosFolder": "results/dev/cypress-frontend-app/2021.03.11/21.51.05.490/allSuites/videos",
+        "baseUrl": "https://www.mybaseurl.dev.io",
+        "ignoreTestFiles": "*.ignore-this.js",
+        "blockHosts": "www.block.this.host.io",
+        "userAgent": "this is my useragent string",
+        "viewportHeight": 770,
+        "viewportWidth": 1110
     },
     "spec": "results/dev/cypress-frontend-app/2021.03.11/21.51.05.490/allSuites/cypress/integration/**/*",
     "reporter": "mochawesome",
@@ -166,13 +172,7 @@ The `cypress-service` built run config `cypress-dev-RUN.json` could look like th
         "germanHost": "www.german.io",
         "englishHost": "www.english.io",
         "brandHost": "www.brand.dev.io"
-    },
-    "baseUrl": "http://www.mybaseurl.dev.io",
-    "ignoreTestFiles": "*.ignore-this.js",
-    "blockHosts": "www.block.this.host.io",
-    "userAgent": "this is my useragent string",
-    "viewportHeight": 770,
-    "viewportWidth": 1110
+    }
 }
 ```
 

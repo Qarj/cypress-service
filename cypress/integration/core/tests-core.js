@@ -61,32 +61,32 @@ describe('Tests', function () {
     });
 
     it('returns cypress-dev-RUN.json with `baseUrl` copied from cypress-dev.json', function () {
-        cy.postTests('/test/dev/cypress-backend-app', 'cypress-backend-app.zip', 'v0.2.2');
+        cy.postTests('/test/dev/cypress-frontend-app', 'cypress-frontend-app.zip', 'v0.2.2');
 
-        cy.httpGet(`/test/dev/cypress-backend-app?noRun=1&group=${u.rndGroup()}`, 200, 'www.mybaseurl.dev.io');
+        cy.httpGet(`/test/dev/cypress-frontend-app?noRun=1&group=${u.rndGroup()}`, 200, 'localhost:4567/ping');
 
-        cy.httpGet('/test/dev/cypress-backend-app/runConfig', 200, 'www.mybaseurl.dev.io');
+        cy.httpGet('/test/dev/cypress-frontend-app/runConfig', 200, 'localhost:4567/ping');
     });
 
     it('returns cypress-dev-RUN.json with `ignoreTestFiles` copied from cypress-dev.json', function () {
-        cy.postTests('/test/dev/cypress-backend-app', 'cypress-backend-app.zip', 'v0.2.2');
-        cy.httpGet(`/test/dev/cypress-backend-app?noRun=1&group=${u.rndGroup()}`, 200, 'ignore-this.js');
+        cy.postTests('/test/dev/cypress-frontend-app', 'cypress-frontend-app.zip', 'v0.2.2');
+        cy.httpGet(`/test/dev/cypress-frontend-app?noRun=1&group=${u.rndGroup()}`, 200, 'ignore-this.js');
     });
 
     it('returns cypress-dev-RUN.json with `blockHosts` copied from cypress-dev.json', function () {
-        cy.postTests('/test/dev/cypress-backend-app', 'cypress-backend-app.zip', 'v0.2.2');
-        cy.httpGet(`/test/dev/cypress-backend-app?noRun=1&group=${u.rndGroup()}`, 200, 'www.block.this.host.io');
+        cy.postTests('/test/dev/cypress-frontend-app', 'cypress-frontend-app.zip', 'v0.2.2');
+        cy.httpGet(`/test/dev/cypress-frontend-app?noRun=1&group=${u.rndGroup()}`, 200, 'www.block.this.host.io');
     });
 
     it('returns cypress-dev-RUN.json with `userAgent` copied from cypress-dev.json', function () {
-        cy.postTests('/test/dev/cypress-backend-app', 'cypress-backend-app.zip', 'v0.2.2');
-        cy.httpGet(`/test/dev/cypress-backend-app?noRun=1&group=${u.rndGroup()}`, 200, 'this is my useragent string');
+        cy.postTests('/test/dev/cypress-frontend-app', 'cypress-frontend-app.zip', 'v0.2.2');
+        cy.httpGet(`/test/dev/cypress-frontend-app?noRun=1&group=${u.rndGroup()}`, 200, 'this is my useragent string');
     });
 
     it('returns cypress-dev-RUN.json with `viewportHeight` and `viewportWidth` copied from cypress-dev.json', function () {
-        cy.postTests('/test/dev/cypress-backend-app', 'cypress-backend-app.zip', 'v0.2.2');
-        cy.httpGet(`/test/dev/cypress-backend-app?noRun=1&group=${u.rndGroup()}`, 200, '770');
-        cy.httpGet(`/test/dev/cypress-backend-app?noRun=1&group=${u.rndGroup()}`, 200, '1110');
+        cy.postTests('/test/dev/cypress-frontend-app', 'cypress-frontend-app.zip', 'v0.2.2');
+        cy.httpGet(`/test/dev/cypress-frontend-app?noRun=1&group=${u.rndGroup()}`, 200, '770');
+        cy.httpGet(`/test/dev/cypress-frontend-app?noRun=1&group=${u.rndGroup()}`, 200, '1110');
     });
 
     it('adds fixturesFolder to built runConfig', function () {
