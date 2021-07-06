@@ -323,7 +323,6 @@ router.get('/:env/:app', async function (req, res) {
     // https://docs.cypress.io/guides/guides/module-api.html#cypress-run
     let runConfig = {
         config: {
-            video: !noVideo,
             defaultCommandTimeout: 30000,
             requestTimeout: 30000,
             screenshotOnRunFailure: true,
@@ -365,10 +364,13 @@ router.get('/:env/:app', async function (req, res) {
     copyProperty('taskTimeout', postedConfig, runConfig['config']);
     copyProperty('pageLoadTimeout', postedConfig, runConfig['config']);
     copyProperty('responseTimeout', postedConfig, runConfig['config']);
+    copyProperty('video', postedConfig, runConfig['config']);
     copyProperty('videoCompression', postedConfig, runConfig['config']);
     copyProperty('animationDistanceThreshold', postedConfig, runConfig['config']);
     copyProperty('waitForAnimations', postedConfig, runConfig['config']);
     copyProperty('scrollBehavior', postedConfig, runConfig['config']);
+
+    if (noVideo) runConfig.config['video'] = false;
 
     const runConfigPath = `tests/${env}/${app}/cypress-${env}-RUN.json`;
     fs.writeFileSync(runConfigPath, JSON.stringify(runConfig));
