@@ -620,11 +620,19 @@ function getCurrentRunStatus(req, env, app) {
 function generateReportAndSaveLocation(options) {
     console.log('Now generating report with these options:');
     console.log(options);
-    merge(options).then((report) => marge.create(report, options));
+    merge(options).then((report) => {
+        marge.create(report, options);
+        const assetsPath = `${options.reportDir}/assets`;
+        if (fs.existsSync(`${assetsPath}/app.js`)) {
+            return;
+        }
+        fs.copySync('workarounds/assets', assetsPath);
+    });
     fs.writeFileSync(
         `${options.deployPath}/lastReport-${options.resultFolder}.json`,
         JSON.stringify({ reportDir: options.reportDir }),
     );
+
     return;
 }
 
