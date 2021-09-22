@@ -399,3 +399,9 @@ npm run cypress:open
 ```
 
 It will take approx 300 seconds to run on a good Linux box.
+
+# Supported npm packages
+
+-   mochawesome
+-   cypress-real-events
+-   cypress-wait-until
