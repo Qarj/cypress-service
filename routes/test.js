@@ -342,8 +342,6 @@ router.get('/:env/:app', async function (req, res) {
             overwrite: false,
             html: false,
             json: true,
-            inline: true,
-            reportPageTitle: `${env}-${resultFolder}`,
         },
     };
 
@@ -425,6 +423,8 @@ router.get('/:env/:app', async function (req, res) {
         deployPath: deployPath,
         resultFolder: resultFolder,
         groupPath: groupPath,
+        inline: true,
+        reportPageTitle: `${env}-${resultFolder}`,
     };
     now = new Date();
     const summaryOptions = {
