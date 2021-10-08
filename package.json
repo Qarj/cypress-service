@@ -1,6 +1,6 @@
 {
     "name": "cypress-service",
-    "version": "1.6.1",
+    "version": "1.7.1",
     "description": "Post your application Cypress tests to a server you host and have it run them in parallel and store the results",
     "main": "index.js",
     "scripts": {
@@ -33,7 +33,7 @@
     "dependencies": {
         "config": "^3.3.3",
         "connect-timeout": "^1.9.0",
-        "cypress": "^7.6.0",
+        "cypress": "^8.5.0",
         "cypress-real-events": "^1.5.1",
         "cypress-service-client": "^1.2.5",
         "cypress-wait-until": "^1.7.1",
