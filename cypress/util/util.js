@@ -1,7 +1,7 @@
 function rndGroup() {
     const now = new Date();
-    const time = pad(now.getHours()) + '.' + pad(now.getMinutes()) + '.' + pad(now.getSeconds());
-    const ms = now.getMilliseconds();
+    const time = pad(now.getUTCHours()) + '.' + pad(now.getUTCMinutes()) + '.' + pad(now.getUTCSeconds());
+    const ms = now.getUTCMilliseconds();
     return `${time}.${ms}`;
 }
 

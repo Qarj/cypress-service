@@ -9,7 +9,8 @@ describe('Tests', function () {
     it('posts a test, runs it, then checks /lastRunResult', function () {
         cy.postTests('/test/dev/cypress-backend-app', 'cypress-backend-app.zip', 'v1.2.3');
         cy.httpGet(`/test/dev/cypress-backend-app?noVideo=1&group=${u.rndGroup()}`, 200, '"failures":0');
-        cy.httpGet('/test/dev/cypress-backend-app/lastReport', 200, 'Mochawesome Report');
+        cy.visit('/test/dev/cypress-backend-app/lastReport');
+        cy.get('body').contains('Account page').should('exist');
         cy.httpGet('/test/dev/cypress-backend-app/lastRunResult', 200, 'loads account page');
     });
 
@@ -201,11 +202,11 @@ describe('Tests', function () {
         cy.httpGet(`/test/purple/cypress-backend-app?suite=core-api&group=${group}&noVideo=1`, 200, '"failures":0');
         cy.httpGetRetry('/test/purple/cypress-backend-app/lastRunResult?suite=canary', 200, 'checks the canary page');
 
-        cy.httpGet(`/test/purple/cypress-backend-app/lastReport?suite=canary`, 200, 'Mochawesome Report');
-        cy.httpGet(`/test/purple/cypress-backend-app/lastReport?suite=canary`, 200, 'suite-canary');
+        cy.visit('/test/purple/cypress-backend-app/lastReport?suite=canary');
+        cy.get('body').contains('checks the canary page').should('exist');
 
-        cy.httpGet(`/test/purple/cypress-backend-app/lastReport?suite=core-api`, 200, 'Mochawesome Report');
-        cy.httpGet(`/test/purple/cypress-backend-app/lastReport?suite=core-api`, 200, 'suite-core-api');
+        cy.visit('/test/purple/cypress-backend-app/lastReport?suite=core-api');
+        cy.get('body').contains('starts the search workflow').should('exist');
     });
 
     it('produces a summary.html report showing suites run and not run', function () {

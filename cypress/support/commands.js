@@ -92,7 +92,7 @@ Cypress.Commands.add('postTests', function (path, postedFileName, version, expec
 
         // Here we also confirm that the POST request succeeded by reading back the version number we posted
         cy.request({
-            url: `${postUrl}?noRun=1`,
+            url: `${postUrl}?noRun=1&group=1.2.3`,
             failOnStatusCode: false,
         }).then((response) => {
             const re = new RegExp(version);

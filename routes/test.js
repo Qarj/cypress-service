@@ -541,7 +541,7 @@ router.get('/:env/:app/parallel', async function (req, res) {
 
 function getDate() {
     const now = new Date();
-    const date = now.getFullYear() + '.' + pad(now.getMonth() + 1) + '.' + pad(now.getDate());
+    const date = now.getUTCFullYear() + '.' + pad(now.getUTCMonth() + 1) + '.' + pad(now.getUTCDate());
     return date;
 }
 
