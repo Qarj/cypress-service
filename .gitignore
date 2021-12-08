@@ -8,6 +8,7 @@ videos/
 
 # Cypress deployed tests
 tests/
+postedJobsList.json
 
 # Logs
 

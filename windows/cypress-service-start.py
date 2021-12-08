@@ -25,7 +25,7 @@ def server_log_locked ():
     return True
 
 def start_cypress_service ():
-    start_service_cmd = f'cd /D {project_root ()} && set "CYPRESS_CACHE_FOLDER=C:\CYPRESS_CACHE" && start cmd.exe /c "npm run start > {project_root ()}\\logs\\cypress-service.log 2>&1"'
+    start_service_cmd = f'cd /D {project_root ()} && set "CYPRESS_CACHE_FOLDER=D:\CYPRESS_CACHE_FOLDER" && start cmd.exe /c "npm run start > {project_root ()}\\logs\\cypress-service.log 2>&1"'
     os.system (start_service_cmd) # cannot run with subprocess - python will wait
 
 set_log_file ('cypress-service-start.log')

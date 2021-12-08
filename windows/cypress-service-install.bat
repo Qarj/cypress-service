@@ -14,8 +14,9 @@ mkdir logs
 
 echo %date% %time% Starting Cypress Service installation > logs\cypress-service-install.log 2>&1
 
-set CYPRESS_CACHE_FOLDER=C:\CYPRESS_CACHE
+set CYPRESS_CACHE_FOLDER=D:\CYPRESS_CACHE_FOLDER
 mkdir %CYPRESS_CACHE_FOLDER%
+echo CYPRESS_CACHE_FOLDER is %CYPRESS_CACHE_FOLDER%
 
 REM Do not show sysinternals eula - service account cannot accept it
 echo Adding registry keys to stop handle64.exe eula from showing >> logs\cypress-service-install.log
