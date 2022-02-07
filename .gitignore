@@ -5,6 +5,8 @@ cypress/screenshots/
 results/
 mochawesome-report/
 videos/
+state/
+test-reports/
 
 # Cypress deployed tests
 tests/

@@ -1,6 +1,6 @@
 {
     "name": "cypress-service",
-    "version": "1.7.2",
+    "version": "1.7.6",
     "description": "Post your application Cypress tests to a server you host and have it run them in parallel and store the results",
     "main": "index.js",
     "scripts": {
@@ -40,9 +40,11 @@
         "eslint-plugin-cypress": "^2.11.2",
         "express": "^4.17.1",
         "express-fileupload": "^1.2.1",
-        "mochawesome": "^6.2.2",
-        "mochawesome-merge": "^4.2.0",
-        "mochawesome-report-generator": "^5.2.0",
+        "junit-report-merger": "^3.0.2",
+        "mocha-junit-reporter": "^2.0.2",
+        "mochawesome": "^7.0.1",
+        "mochawesome-merge": "^4.2.1",
+        "mochawesome-report-generator": "^6.0.1",
         "serve-index": "^1.9.1",
         "unzipper": "^0.10.11"
     },

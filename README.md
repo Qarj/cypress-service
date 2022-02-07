@@ -358,7 +358,7 @@ Returns the last json run result returned by `cypress.run()` for those tests.
 
 Returns a message confirming the server is up.
 
-# Server installation
+# Linux Server installation
 
 Consider using the npm package `pm2` - this makes it very easy to setup.
 
@@ -366,15 +366,40 @@ All you have to do is install this globally:
 
 ```
 npm install pm2 -g
+pm2 --version
+.
+[PM2] Spawning PM2 daemon with pm2_home=/home/test/.pm2
+[PM2] PM2 Successfully daemonized
+5.1.2
 ```
 
 Then from within the `cypress-service` folder:
 
 ```
-pm2 start index.js
+pm2 start index.js --name cypress-service
+pm2 save
+pm2 startup
+.
+[PM2] Init System found: systemd
+[PM2] To setup the Startup Script, copy/paste the following command:
+sudo env PATH=$PATH:/home/test/.nvm/versions/node/v12.13.0/bin /home/test/.nvm/versions/node/v12.13.0/lib/node_modules/pm2/bin/pm2 startup systemd -u test --hp /home/test
 ```
 
-This will start it and daemonise it and you are done. It even works on Windows!
+Make sure to copy and paste the command it gives in output.
+
+To upgrade, run the following then do the install again
+
+```
+pm2 stop cypress-service
+pm2 delete cypress-service
+pm2 save
+```
+
+To remove from startup, then run the command it gives in output
+
+```
+pm2 unstartup systemd
+```
 
 Note re Windows - It is strongly suggested to use Linux and not Windows as the server. In a test conducted on a 4 core 8 thread AWS XEON server with 16 GB memory it took 600 seconds to conduct a certain heavily parallel test. The same test on Linux running inside Virtual Box with just 8 GB of memory and 3 cores / 6 threads took just 100 seconds - and this was on a Dell laptop!
 
